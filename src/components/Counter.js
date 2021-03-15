@@ -15,7 +15,10 @@ A naive developer might say 3 different slices:
 But a single slice of state is all that's needed here: the count!
 The other things can simply be _derived_ from the count itself.
 
-STEP 0:
+STEP 0: //! what does importing the state hook mean? It means to import UseState behiond react see below for example 
+
+
+
   Start by studying the component below, and importing the state hook.
 
 STEP 1:
@@ -29,12 +32,13 @@ STEP 2:
 
 STEP 3:
   We need to replace some hard-coded info in the JSX with expressions, interpolated inside curly brackets.
+  {count}  {count % 2 === 0 }  ^^^ KEEP IT SIMPLE DON'T OVERTHINK IT 
   Start by replacing the character "0" with {count}. The 'count' slice of state is the source of truth here.
   Then, replace the word "even" with a ternary: {if count is even number, then string "even", else string "odd"}.
 
 STEP 4:
   This click handler needs to use 'setCount' to schedule the 'count' to become the current 'count' plus one.
-  These state changes are not synchronous: the updated count arrives on the next run of the Counter component.
+  //? These state changes are not synchronous: the updated count arrives on the next run of the Counter component.
   Do NOT simply do count++. The plus plus is forbidden! We never mutate a slice of state in place. Even if you could
   reassign a const, React would not be aware anything changed. Always use the state updater, passing in a new value.
 
@@ -46,32 +50,35 @@ STEP 6:
   This click handler needs to use 'setCount' to set the 'count' to be zero again.
 */
 
-import React from 'react'; /* STEP 0 */
+import React, {useState} from 'react'; /* STEP 0 */
 
-export default function Counter() {
+export default function Counter() { 
   /* STEP 1 */
-
+  const [count, setCount] = useState(0);
   const increment = () => {
+    setCount(count + 1)
     /* STEP 4 */
   };
   const decrement = () => {
+    setCount(count - 1)
     /* STEP 5 */
   };
   const reset = () => {
+    setCount(count * 0)
     /* STEP 6 */
   };
 
   const style = {
     fontSize: '1.5em',
     marginBottom: '0.3em',
-    color: 'royalblue', /* STEP 2 */
+    color: count % 2 === 0  ? 'royalblue': 'crimson' /* STEP 2 */
   };
 
   return (
     <div className='widget-counter container'>
       <h2>Counter</h2>
       <div id='count' style={style}>
-        Number 0 is even {/* STEP 3 */}
+        Number {count} is {count % 2 === 0 } {/* STEP 3 */}
       </div>
       <div>
         <button id='increment' onClick={increment}>Increment</button>
